@@ -48,4 +48,8 @@ def bhavcopy(day):
             print("Data for "+str(daycheck.strftime('%d-%b-%Y')).upper()+" already exists.")
         con.close()
 
-bhavcopy(date(2018,1,17))
+if __name__ == "__main__":
+    print("Enter the date from which you want to add the data to NSE.db")
+    day = input('Enter a date (i.e. 2017,7,25):')
+    yyyy,dd,mm = map(int, day.split(','))
+    bhavcopy(date(yyyy,dd,mm))
