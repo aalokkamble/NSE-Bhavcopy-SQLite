@@ -50,6 +50,6 @@ def bhavcopy(day):
 
 if __name__ == "__main__":
     print("Enter the date from which you want to add the data to NSE.db")
-    day = input('Enter a date (i.e. 2017,7,25):')
+    day = input('Enter a date yyyy,dd,mm (i.e. 2017,25,12):')
     yyyy,dd,mm = map(int, day.split(','))
     bhavcopy(date(yyyy,dd,mm))
