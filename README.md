@@ -14,3 +14,5 @@ Also, you need the following modules:
 * `sqlite3` 
 
 The modules can also be installed using `pip`
+
+All the downloaded file from NSE will be stored in the sub directory `downloads`
