@@ -13,14 +13,14 @@ def bhavcopy_download(day):
     #Downlaod bhavcompy file and extract csv file
     zfile = requests.get(url, allow_redirects=True)
     if(zfile.status_code!=404):
-        open('cm'+dd+mmm+yyyy+'bhav.csv.zip', 'wb').write(zfile.content)
-        zip_ref = zipfile.ZipFile('cm'+dd+mmm+yyyy+'bhav.csv.zip', 'r')
-        zip_ref.extractall()
+        open('Downloaded\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'wb').write(zfile.content)
+        zip_ref = zipfile.ZipFile('Downloads\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'r')
+        zip_ref.extractall('Downloads')
         zip_ref.close()
 
         #Insert the data from CSV file to NSE.db database
         con = sqlite3.connect('NSE.db')
-        df = pandas.read_csv('cm'+dd+mmm+yyyy+'bhav.csv')
+        df = pandas.read_csv('Downloads\cm'+dd+mmm+yyyy+'bhav.csv')
         # df.to_sql(table_name, conn, if_exists='append', index=False)
         df.to_sql('NSE', con, if_exists='append', index=False, index_label='SYMBOL')
         con.commit()
