@@ -12,8 +12,9 @@ def bhavcopy_download(day):
 
     #Downlaod bhavcompy file and extract csv file
     zfile = requests.get(url, allow_redirects=True)
+    print(url)
     if(zfile.status_code!=404):
-        open('Downloaded\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'wb').write(zfile.content)
+        open('Downloads\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'wb').write(zfile.content)
         zip_ref = zipfile.ZipFile('Downloads\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'r')
         zip_ref.extractall('Downloads')
         zip_ref.close()
