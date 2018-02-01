@@ -16,3 +16,6 @@ Also, you need the following modules:
 The modules can also be installed using `pip`
 
 All the downloaded file from NSE will be stored in the sub directory `Downloads`
+
+# Disclaimer
+Corporate Actions are not considered.
