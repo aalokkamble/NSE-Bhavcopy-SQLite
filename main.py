@@ -64,12 +64,32 @@ def keep_only_FO():
     con.commit()
     con.close()
 
+def format_date():
+    con = sqlite3.connect('NSE.db')
+    #Update date format:
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'JAN', '01' ) WHERE TIMESTAMP LIKE '%JAN%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'FEB', '02' ) WHERE TIMESTAMP LIKE '%FEB%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'MAR', '03' ) WHERE TIMESTAMP LIKE '%MAR%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'APR', '04' ) WHERE TIMESTAMP LIKE '%APR%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'MAY', '05' ) WHERE TIMESTAMP LIKE '%MAY%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'JUN', '06' ) WHERE TIMESTAMP LIKE '%JUN%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'JUL', '07' ) WHERE TIMESTAMP LIKE '%JUL%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'AUG', '08' ) WHERE TIMESTAMP LIKE '%AUG%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'SEP', '09' ) WHERE TIMESTAMP LIKE '%SEP%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'OCT', '10' ) WHERE TIMESTAMP LIKE '%OCT%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'NOV', '11' ) WHERE TIMESTAMP LIKE '%NOV%';")
+    con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'DEC', '12' ) WHERE TIMESTAMP LIKE '%DEC%';")
+    con.execute("UPDATE NSE set TIMESTAMP= (select strftime('%Y-%m-%d',datetime(substr(TIMESTAMP, 7, 4) || '-' || substr(TIMESTAMP, 4, 2) || '-' || substr(TIMESTAMP, 1, 2)))) where substr(TIMESTAMP, 5, 1)='-' and substr(TIMESTAMP, 8, 1)='-';")
+    con.commit()
+    con.close() 
+
 if __name__ == "__main__":
     print("Enter the date from which you want to add the data to NSE.db")
     day = input('Enter a date dd-mm-yyyy (i.e. 23-12-2017):')
     dd,mm,yyyy = map(int, day.split('-'))
     bhavcopy(date(yyyy,mm,dd))
 
+    format_data()
     EQ = input('Do you wish to keep only Series-EQ data and remove the rest? (y/n):')
     if(EQ=='y'):
         keep_series_EQ()
