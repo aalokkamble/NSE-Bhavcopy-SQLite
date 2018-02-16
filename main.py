@@ -42,8 +42,8 @@ def bhavcopy(day):
         #check if data for the date already exists in db
         con = sqlite3.connect('NSE.db')
         cur = con.execute("Select TIMESTAMP from NSE where TIMESTAMP =?",(str(daycheck.strftime('%d-%b-%Y')).upper(),))
-        NSEdata = cur.fetchone()
-        if NSEdata is None:
+        cur2 = con.execute("Select TIMESTAMP from NSE where TIMESTAMP =?",(str(daycheck.strftime('%Y-%m-%d')),))
+        if cur.fetchone() is None and cur2.fetchone() is None:
             #add data
             bhavcopy_download(daycheck)
         else:
@@ -79,7 +79,7 @@ def format_date():
     con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'OCT', '10' ) WHERE TIMESTAMP LIKE '%OCT%';")
     con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'NOV', '11' ) WHERE TIMESTAMP LIKE '%NOV%';")
     con.execute("UPDATE NSE SET TIMESTAMP = replace( TIMESTAMP, 'DEC', '12' ) WHERE TIMESTAMP LIKE '%DEC%';")
-    con.execute("UPDATE NSE set TIMESTAMP= (select strftime('%Y-%m-%d',datetime(substr(TIMESTAMP, 7, 4) || '-' || substr(TIMESTAMP, 4, 2) || '-' || substr(TIMESTAMP, 1, 2)))) where substr(TIMESTAMP, 5, 1)='-' and substr(TIMESTAMP, 8, 1)='-';")
+    con.execute("update NSE set timestamp = strftime('%Y-%m-%d',datetime(substr(TIMESTAMP, 7, 4) || '-' || substr(TIMESTAMP, 4, 2) || '-' || substr(TIMESTAMP, 1, 2))) where substr(TIMESTAMP, 3, 1)='-' and substr(TIMESTAMP, 6, 1)='-';")
     con.commit()
     con.close() 
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     dd,mm,yyyy = map(int, day.split('-'))
     bhavcopy(date(yyyy,mm,dd))
 
-    format_data()
+    format_date()
     EQ = input('Do you wish to keep only Series-EQ data and remove the rest? (y/n):')
     if(EQ=='y'):
         keep_series_EQ()
