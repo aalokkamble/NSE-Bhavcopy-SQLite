@@ -13,6 +13,8 @@ def bhavcopy_download(day):
     #Downlaod bhavcompy file and extract csv file
     zfile = requests.get(url, allow_redirects=True)
     print(url)
+    if not os.path.exists('Downloads'):
+        os.makedirs('Downloads')
     if(zfile.status_code!=404):
         open('Downloads\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'wb').write(zfile.content)
         zip_ref = zipfile.ZipFile('Downloads\cm'+dd+mmm+yyyy+'bhav.csv.zip', 'r')
@@ -26,6 +28,7 @@ def bhavcopy_download(day):
         df.to_sql('NSE', con, if_exists='append', index=False, index_label='SYMBOL')
         con.commit()
         con.close()
+        format_date()
         print("Data for " + str(day.strftime('%d-%b-%Y')).upper() + " added")
         
 
@@ -89,7 +92,6 @@ if __name__ == "__main__":
     dd,mm,yyyy = map(int, day.split('-'))
     bhavcopy(date(yyyy,mm,dd))
 
-    format_date()
     EQ = input('Do you wish to keep only Series-EQ data and remove the rest? (y/n):')
     if(EQ=='y'):
         keep_series_EQ()
